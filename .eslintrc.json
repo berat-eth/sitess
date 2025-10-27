@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {
   "extends": "next/core-web-vitals",
   "rules": {
@@ -5,3 +6,12 @@
     "@next/next/no-img-element": "warn"
   }
 }
+=======
+{
+  "extends": "next/core-web-vitals",
+  "rules": {
+    "react-hooks/exhaustive-deps": "warn",
+    "@next/next/no-img-element": "warn"
+  }
+}
+>>>>>>> 4855e23d27390993c3739d0f6d832d04426b1d54
