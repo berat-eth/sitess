@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 
 interface AnimatedElementProps {
   children: ReactNode;
@@ -169,29 +169,29 @@ export const CountUp = ({
   className?: string;
   suffix?: string;
 }) => {
+  // Simple, reliable counter using requestAnimationFrame
+  const [value, setValue] = React.useState(0);
+
+  React.useEffect(() => {
+    let rafId = 0;
+    const start = performance.now();
+    const from = 0;
+    const to = end;
+    const totalMs = Math.max(0.1, duration) * 1000;
+
+    const tick = (now: number) => {
+      const elapsed = Math.min(1, (now - start) / totalMs);
+      const next = from + (to - from) * elapsed;
+      setValue(next);
+      if (elapsed < 1) rafId = requestAnimationFrame(tick);
+    };
+
+    rafId = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(rafId);
+  }, [end, duration]);
+
   return (
-    <motion.span
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      viewport={{ once: true }}
-      className={className}
-    >
-      <motion.span
-        initial={{ textContent: 0 }}
-        whileInView={{ textContent: end }}
-        viewport={{ once: true }}
-        transition={{ duration, ease: "easeOut" }}
-        onUpdate={(latest) => {
-          if (typeof latest.textContent === 'number') {
-            const element = document.querySelector(`[data-count="${end}"]`);
-            if (element) {
-              element.textContent = Math.round(latest.textContent) + suffix;
-            }
-          }
-        }}
-        data-count={end}
-      />
-    </motion.span>
+    <span className={className}>{Math.round(value)}{suffix}</span>
   );
 };
 

@@ -88,9 +88,15 @@ export default function Home() {
       <section className="py-20 bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900 relative overflow-hidden">
         {/* Animated Background Elements */}
         <div className="absolute inset-0">
-          <FloatingElement className="absolute top-20 left-10 w-32 h-32 bg-blue-500/10 rounded-full blur-xl" />
-          <FloatingElement className="absolute top-60 right-20 w-40 h-40 bg-purple-500/10 rounded-full blur-xl" />
-          <FloatingElement className="absolute bottom-20 left-1/4 w-28 h-28 bg-pink-500/10 rounded-full blur-xl" />
+          <FloatingElement className="absolute top-20 left-10 w-32 h-32">
+            <div className="w-full h-full bg-blue-500/10 rounded-full blur-xl" />
+          </FloatingElement>
+          <FloatingElement className="absolute top-60 right-20 w-40 h-40">
+            <div className="w-full h-full bg-purple-500/10 rounded-full blur-xl" />
+          </FloatingElement>
+          <FloatingElement className="absolute bottom-20 left-1/4 w-28 h-28">
+            <div className="w-full h-full bg-pink-500/10 rounded-full blur-xl" />
+          </FloatingElement>
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -405,9 +411,15 @@ export default function Home() {
       <section className="py-20 bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900 relative overflow-hidden">
         {/* Animated Background Elements */}
         <div className="absolute inset-0">
-          <FloatingElement className="absolute top-20 left-10 w-32 h-32 bg-blue-500/10 rounded-full blur-xl" />
-          <FloatingElement className="absolute top-60 right-20 w-40 h-40 bg-purple-500/10 rounded-full blur-xl" />
-          <FloatingElement className="absolute bottom-20 left-1/4 w-28 h-28 bg-pink-500/10 rounded-full blur-xl" />
+          <FloatingElement className="absolute top-20 left-10 w-32 h-32">
+            <div className="w-full h-full bg-blue-500/10 rounded-full blur-xl" />
+          </FloatingElement>
+          <FloatingElement className="absolute top-60 right-20 w-40 h-40">
+            <div className="w-full h-full bg-purple-500/10 rounded-full blur-xl" />
+          </FloatingElement>
+          <FloatingElement className="absolute bottom-20 left-1/4 w-28 h-28">
+            <div className="w-full h-full bg-pink-500/10 rounded-full blur-xl" />
+          </FloatingElement>
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
