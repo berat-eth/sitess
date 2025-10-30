@@ -3,40 +3,50 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 
-interface DashboardHeaderProps {
+interface AdminHeaderProps {
   onMenuClick: () => void;
 }
 
-const DashboardHeader = ({ onMenuClick }: DashboardHeaderProps) => {
+const AdminHeader = ({ onMenuClick }: AdminHeaderProps) => {
   const [showNotifications, setShowNotifications] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
 
   const notifications = [
     {
       id: 1,
-      title: 'Yeni Rapor Hazır',
-      message: 'Pazar Araştırması raporunuz tamamlandı',
+      title: 'Yeni Proje Onayı',
+      message: '3 proje onay bekliyor',
       time: '5 dakika önce',
       unread: true,
+      type: 'warning'
     },
     {
       id: 2,
-      title: 'Ödeme Hatırlatması',
-      message: 'Aylık abonelik ödemesi yaklaşıyor',
-      time: '2 saat önce',
+      title: 'Sistem Uyarısı',
+      message: 'API rate limit %80 doluluk',
+      time: '1 saat önce',
       unread: true,
+      type: 'error'
     },
     {
       id: 3,
-      title: 'Proje Güncellemesi',
-      message: 'Sosyal Medya Analizi projesi başlatıldı',
-      time: '1 gün önce',
+      title: 'Yeni Kullanıcı',
+      message: '5 yeni kullanıcı kaydı',
+      time: '2 saat önce',
       unread: false,
+      type: 'info'
     },
   ];
 
+  const systemStatus = {
+    uptime: 99.8,
+    activeUsers: 892,
+    apiHealth: 'healthy',
+    dbHealth: 'healthy'
+  };
+
   return (
-    <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8">
+    <div className="sticky top-0 z-30 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6">
       {/* Mobile menu button */}
       <button
         type="button"
@@ -53,32 +63,33 @@ const DashboardHeader = ({ onMenuClick }: DashboardHeaderProps) => {
       <div className="h-6 w-px bg-gray-200 lg:hidden" />
 
       <div className="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
-        {/* Search */}
-        <form className="relative flex flex-1" action="#" method="GET">
-          <label htmlFor="search-field" className="sr-only">
-            Ara
-          </label>
-          <svg
-            className="pointer-events-none absolute inset-y-0 left-0 h-full w-5 text-gray-400"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
-            <path
-              fillRule="evenodd"
-              d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z"
-              clipRule="evenodd"
-            />
-          </svg>
-          <input
-            id="search-field"
-            className="block h-full w-full border-0 py-0 pl-8 pr-0 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm"
-            placeholder="Projeler, raporlar ara..."
-            type="search"
-            name="search"
-          />
-        </form>
+        {/* System Status */}
+        <div className="flex items-center gap-x-4">
+          <div className="hidden lg:flex items-center gap-x-2">
+            <div className="flex items-center gap-x-1">
+              <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+              <span className="text-xs text-gray-600">Sistem: %{systemStatus.uptime}</span>
+            </div>
+            <div className="flex items-center gap-x-1">
+              <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+              <span className="text-xs text-gray-600">Aktif: {systemStatus.activeUsers}</span>
+            </div>
+          </div>
+        </div>
 
-        <div className="flex items-center gap-x-4 lg:gap-x-6">
+        <div className="flex items-center gap-x-4 lg:gap-x-6 ml-auto">
+          {/* System Health Indicators */}
+          <div className="hidden lg:flex items-center gap-x-3">
+            <div className="flex items-center gap-x-1">
+              <div className={`w-2 h-2 rounded-full ${systemStatus.apiHealth === 'healthy' ? 'bg-green-500' : 'bg-red-500'}`}></div>
+              <span className="text-xs text-gray-600">API</span>
+            </div>
+            <div className="flex items-center gap-x-1">
+              <div className={`w-2 h-2 rounded-full ${systemStatus.dbHealth === 'healthy' ? 'bg-green-500' : 'bg-red-500'}`}></div>
+              <span className="text-xs text-gray-600">DB</span>
+            </div>
+          </div>
+
           {/* Notifications */}
           <div className="relative">
             <button
@@ -106,17 +117,23 @@ const DashboardHeader = ({ onMenuClick }: DashboardHeaderProps) => {
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                className="absolute right-0 z-10 mt-2 w-80 origin-top-right rounded-xl bg-white py-2 shadow-lg ring-1 ring-gray-900/5"
+                className="absolute right-0 z-10 mt-2 w-80 origin-top-right rounded-lg bg-white py-2 shadow-lg ring-1 ring-gray-900/5"
               >
                 <div className="px-4 py-2 border-b border-gray-100">
-                  <h3 className="text-sm font-semibold text-gray-900">Bildirimler</h3>
+                  <h3 className="text-sm font-semibold text-gray-900">Sistem Bildirimleri</h3>
                 </div>
                 <div className="max-h-64 overflow-y-auto">
                   {notifications.map((notification) => (
                     <div
                       key={notification.id}
                       className={`px-4 py-3 hover:bg-gray-50 cursor-pointer border-l-4 ${
-                        notification.unread ? 'border-blue-500 bg-blue-50/50' : 'border-transparent'
+                        notification.unread 
+                          ? notification.type === 'error' 
+                            ? 'border-red-500 bg-red-50/50' 
+                            : notification.type === 'warning'
+                            ? 'border-yellow-500 bg-yellow-50/50'
+                            : 'border-blue-500 bg-blue-50/50'
+                          : 'border-transparent'
                       }`}
                     >
                       <div className="flex justify-between items-start">
@@ -125,7 +142,10 @@ const DashboardHeader = ({ onMenuClick }: DashboardHeaderProps) => {
                           <p className="text-sm text-gray-600 mt-1">{notification.message}</p>
                         </div>
                         {notification.unread && (
-                          <div className="w-2 h-2 bg-blue-500 rounded-full ml-2 mt-1"></div>
+                          <div className={`w-2 h-2 rounded-full ml-2 mt-1 ${
+                            notification.type === 'error' ? 'bg-red-500' :
+                            notification.type === 'warning' ? 'bg-yellow-500' : 'bg-blue-500'
+                          }`}></div>
                         )}
                       </div>
                       <p className="text-xs text-gray-400 mt-2">{notification.time}</p>
@@ -151,12 +171,12 @@ const DashboardHeader = ({ onMenuClick }: DashboardHeaderProps) => {
               className="-m-1.5 flex items-center p-1.5 hover:bg-gray-50 rounded-lg transition-colors duration-200"
               onClick={() => setShowUserMenu(!showUserMenu)}
             >
-              <span className="sr-only">Kullanıcı menüsünü aç</span>
-              <div className="h-8 w-8 rounded-full bg-gradient-primary flex items-center justify-center">
-                <span className="text-sm font-semibold text-white">AK</span>
+              <span className="sr-only">Admin menüsünü aç</span>
+              <div className="h-8 w-8 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center">
+                <span className="text-sm font-semibold text-white">A</span>
               </div>
               <span className="hidden lg:flex lg:items-center">
-                <span className="ml-4 text-sm font-semibold leading-6 text-gray-900">Ahmet Kaya</span>
+                <span className="ml-4 text-sm font-semibold leading-6 text-gray-900">Admin</span>
                 <svg className="ml-2 h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
                   <path
                     fillRule="evenodd"
@@ -173,19 +193,19 @@ const DashboardHeader = ({ onMenuClick }: DashboardHeaderProps) => {
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                className="absolute right-0 z-10 mt-2.5 w-48 origin-top-right rounded-xl bg-white py-2 shadow-lg ring-1 ring-gray-900/5"
+                className="absolute right-0 z-10 mt-2.5 w-48 origin-top-right rounded-lg bg-white py-2 shadow-lg ring-1 ring-gray-900/5"
               >
                 <a
-                  href="/dashboard/profile"
+                  href="/admin/profile"
                   className="block px-3 py-1 text-sm leading-6 text-gray-900 hover:bg-gray-50 rounded-lg mx-2"
                 >
-                  Profilim
+                  Admin Profili
                 </a>
                 <a
-                  href="/dashboard/settings"
+                  href="/admin/settings"
                   className="block px-3 py-1 text-sm leading-6 text-gray-900 hover:bg-gray-50 rounded-lg mx-2"
                 >
-                  Ayarlar
+                  Sistem Ayarları
                 </a>
                 <div className="my-1 h-px bg-gray-200 mx-2" />
                 <a
@@ -203,4 +223,4 @@ const DashboardHeader = ({ onMenuClick }: DashboardHeaderProps) => {
   );
 };
 
-export default DashboardHeader;
+export default AdminHeader;

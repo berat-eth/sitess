@@ -1,10 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import DashboardSidebar from '@/components/DashboardSidebar';
-import DashboardHeader from '@/components/DashboardHeader';
+import AdminSidebar from '@/components/AdminSidebar';
+import AdminHeader from '@/components/AdminHeader';
 
-export default function DashboardLayout({
+export default function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -12,7 +12,7 @@ export default function DashboardLayout({
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="h-screen bg-gray-50">
+    <div className="h-screen bg-gray-100 flex">
       {/* Mobile sidebar backdrop */}
       {sidebarOpen && (
         <div
@@ -22,19 +22,19 @@ export default function DashboardLayout({
       )}
 
       {/* Sidebar */}
-      <DashboardSidebar 
+      <AdminSidebar 
         isOpen={sidebarOpen} 
         onClose={() => setSidebarOpen(false)} 
       />
 
       {/* Main content */}
-      <div className="lg:pl-64">
+      <div className="flex-1 flex flex-col lg:pl-64">
         {/* Header */}
-        <DashboardHeader onMenuClick={() => setSidebarOpen(true)} />
+        <AdminHeader onMenuClick={() => setSidebarOpen(true)} />
         
         {/* Page content */}
-        <main className="py-6">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <main className="flex-1 overflow-y-auto">
+          <div className="p-6">
             {children}
           </div>
         </main>

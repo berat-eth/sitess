@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { mockPayments, getPaymentStatusLabel, getPaymentStatusColor, Payment } from '@/data/dashboardData';
 
-const PaymentRow = ({ payment, index }: { payment: Payment; index: number }) => (
+const AdminPaymentRow = ({ payment, index }: { payment: Payment; index: number }) => (
   <motion.tr
     initial={{ opacity: 0, y: 10 }}
     animate={{ opacity: 1, y: 0 }}
@@ -12,11 +12,9 @@ const PaymentRow = ({ payment, index }: { payment: Payment; index: number }) => 
     className="hover:bg-gray-50 transition-colors duration-200"
   >
     <td className="px-6 py-4 whitespace-nowrap">
-      <div className="flex items-center">
-        <div>
-          <div className="text-sm font-medium text-gray-900">#{payment.invoiceNumber}</div>
-          <div className="text-sm text-gray-500">{payment.description}</div>
-        </div>
+      <div>
+        <div className="text-sm font-medium text-gray-900">#{payment.invoiceNumber}</div>
+        <div className="text-sm text-gray-500">{payment.description}</div>
       </div>
     </td>
     <td className="px-6 py-4 whitespace-nowrap">
@@ -35,19 +33,21 @@ const PaymentRow = ({ payment, index }: { payment: Payment; index: number }) => 
     </td>
     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
       <div className="flex items-center gap-2 justify-end">
-        <button className="text-blue-600 hover:text-blue-900 transition-colors duration-200">
+        <button className="text-blue-600 hover:text-blue-900 transition-colors duration-200" title="Düzenle">
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
           </svg>
         </button>
-        {payment.status === 'pending' && (
-          <button className="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded text-xs font-medium transition-colors duration-200">
-            Öde
-          </button>
-        )}
+        <button className="text-green-600 hover:text-green-900 transition-colors duration-200" title="Fatura Gönder">
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+          </svg>
+        </button>
         {payment.status === 'overdue' && (
-          <button className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-xs font-medium transition-colors duration-200">
-            Öde
+          <button className="text-red-600 hover:text-red-900 transition-colors duration-200" title="Hatırlatma Gönder">
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+            </svg>
           </button>
         )}
       </div>
@@ -55,7 +55,7 @@ const PaymentRow = ({ payment, index }: { payment: Payment; index: number }) => 
   </motion.tr>
 );
 
-export default function PaymentsPage() {
+export default function AdminPaymentsPage() {
   const [filter, setFilter] = useState<'all' | Payment['status']>('all');
 
   const filteredPayments = mockPayments.filter(payment => {
@@ -82,11 +82,11 @@ export default function PaymentsPage() {
         className="flex flex-col sm:flex-row sm:items-center sm:justify-between"
       >
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Ödemeler</h1>
-          <p className="text-gray-600 mt-1">Fatura ve ödeme durumlarınızı takip edin</p>
+          <h1 className="text-3xl font-bold text-gray-900">Ödeme Yönetimi</h1>
+          <p className="text-gray-600 mt-1">Fatura ve ödeme işlemlerini yönetin</p>
         </div>
-        <button className="mt-4 sm:mt-0 bg-gradient-primary hover:bg-gradient-secondary text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 hover-lift">
-          Ödeme Yap
+        <button className="mt-4 sm:mt-0 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200">
+          Yeni Fatura Oluştur
         </button>
       </motion.div>
 
@@ -139,6 +139,30 @@ export default function PaymentsPage() {
         </div>
       </motion.div>
 
+      {/* Stats Cards */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="grid grid-cols-2 md:grid-cols-4 gap-4"
+      >
+        <div className="bg-white rounded-lg p-4 text-center border border-gray-200">
+          <p className="text-2xl font-bold text-gray-900">{statusCounts.all}</p>
+          <p className="text-sm text-gray-600">Toplam Fatura</p>
+        </div>
+        <div className="bg-white rounded-lg p-4 text-center border border-gray-200">
+          <p className="text-2xl font-bold text-green-600">{statusCounts.paid}</p>
+          <p className="text-sm text-gray-600">Ödendi</p>
+        </div>
+        <div className="bg-white rounded-lg p-4 text-center border border-gray-200">
+          <p className="text-2xl font-bold text-yellow-600">{statusCounts.pending}</p>
+          <p className="text-sm text-gray-600">Beklemede</p>
+        </div>
+        <div className="bg-white rounded-lg p-4 text-center border border-gray-200">
+          <p className="text-2xl font-bold text-red-600">{statusCounts.overdue}</p>
+          <p className="text-sm text-gray-600">Gecikmiş</p>
+        </div>
+      </motion.div>
+
       {/* Payments Table */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -160,10 +184,9 @@ export default function PaymentsPage() {
                 <option value="pending">Beklemede</option>
                 <option value="overdue">Gecikmiş</option>
               </select>
-              <input
-                type="month"
-                className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
+              <button className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200">
+                Excel İndir
+              </button>
             </div>
           </div>
         </div>
@@ -195,28 +218,12 @@ export default function PaymentsPage() {
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {filteredPayments.map((payment, index) => (
-                <PaymentRow key={payment.id} payment={payment} index={index} />
+                <AdminPaymentRow key={payment.id} payment={payment} index={index} />
               ))}
             </tbody>
           </table>
         </div>
       </motion.div>
-
-      {filteredPayments.length === 0 && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="text-center py-12"
-        >
-          <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <svg className="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
-            </svg>
-          </div>
-          <h3 className="text-lg font-medium text-gray-900 mb-2">Ödeme Bulunamadı</h3>
-          <p className="text-gray-600">Seçilen filtrelere uygun ödeme bulunmuyor.</p>
-        </motion.div>
-      )}
     </div>
   );
 }
