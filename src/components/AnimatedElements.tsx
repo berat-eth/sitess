@@ -67,7 +67,7 @@ export const ScaleIn = ({ children, className = '', delay = 0, duration = 0.5 }:
   );
 };
 
-export const FloatingElement = ({ children, className = '' }: { children: ReactNode; className?: string }) => {
+export const FloatingElement = ({ children, className = '' }: { children?: ReactNode; className?: string }) => {
   return (
     <motion.div
       animate={{ 
@@ -81,7 +81,7 @@ export const FloatingElement = ({ children, className = '' }: { children: ReactN
       }}
       className={className}
     >
-      {children}
+      {children ?? null}
     </motion.div>
   );
 };
