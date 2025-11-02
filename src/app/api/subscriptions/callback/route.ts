@@ -17,7 +17,7 @@ async function getIyzipay() {
   return iyzipay;
 }
 
-export async function POST(request: NextRequest) {
+export async function POST(request: NextRequest): Promise<NextResponse> {
   try {
     const body = await request.json();
     const { token, conversationId, status } = body;
@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
       token: token
     };
 
-    return new Promise((resolve) => {
+    return new Promise<NextResponse>((resolve) => {
       iyzipayInstance.payment.retrieve(retrieveRequest, (err: any, result: any) => {
         if (err) {
           console.error('iyzico Callback Error:', err);
@@ -77,7 +77,7 @@ export async function POST(request: NextRequest) {
 }
 
 // Also handle GET requests (in case iyzico redirects)
-export async function GET(request: NextRequest) {
+export async function GET(request: NextRequest): Promise<NextResponse> {
   const searchParams = request.nextUrl.searchParams;
   const token = searchParams.get('token');
   const conversationId = searchParams.get('conversationId');
@@ -97,7 +97,7 @@ export async function GET(request: NextRequest) {
     token: token
   };
 
-  return new Promise((resolve) => {
+  return new Promise<NextResponse>((resolve) => {
     iyzipayInstance.payment.retrieve(retrieveRequest, (err: any, result: any) => {
       if (err || result.status !== 'success' || result.paymentStatus !== 'SUCCESS') {
         resolve(NextResponse.redirect(

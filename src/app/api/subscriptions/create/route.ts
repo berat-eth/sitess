@@ -18,7 +18,7 @@ async function getIyzipay() {
   return iyzipay;
 }
 
-export async function POST(request: NextRequest) {
+export async function POST(request: NextRequest): Promise<NextResponse> {
   try {
     const body = await request.json();
     const { planId, name, email, phone, cardNumber, expiryDate, cvv, cardHolderName } = body;
@@ -108,7 +108,7 @@ export async function POST(request: NextRequest) {
     // Make payment request to iyzico
     const iyzipayInstance = await getIyzipay();
     
-    return new Promise((resolve) => {
+    return new Promise<NextResponse>((resolve) => {
       iyzipayInstance.payment.create(paymentRequest, (err: any, result: any) => {
         if (err) {
           console.error('iyzico Payment Error:', err);
