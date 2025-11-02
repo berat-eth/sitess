@@ -11,6 +11,11 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  // iyzipay modülü dinamik require kullandığı için external olarak işaretlenmeli
+  serverExternalPackages: ['iyzipay'],
+  experimental: {
+    serverComponentsExternalPackages: ['iyzipay'],
+  },
 };
 
 export default nextConfig;
