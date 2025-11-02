@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
+import ApiKeyManager from '@/components/ApiKeyManager';
 
 export default function ProfilePage() {
   const [activeTab, setActiveTab] = useState('personal');
@@ -49,6 +50,7 @@ export default function ProfilePage() {
   const tabs = [
     { id: 'personal', name: 'Kişisel Bilgiler', icon: '👤' },
     { id: 'company', name: 'Şirket Bilgileri', icon: '🏢' },
+    { id: 'api-keys', name: 'API Anahtarları', icon: '🔑' },
     { id: 'notifications', name: 'Bildirimler', icon: '🔔' },
     { id: 'privacy', name: 'Gizlilik', icon: '🔒' },
   ];
@@ -303,6 +305,13 @@ export default function ProfilePage() {
                     </label>
                   </div>
                 </div>
+              </div>
+            )}
+
+            {/* API Keys */}
+            {activeTab === 'api-keys' && (
+              <div className="space-y-6">
+                <ApiKeyManager />
               </div>
             )}
 

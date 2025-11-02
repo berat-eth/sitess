@@ -12,25 +12,25 @@ interface ServiceCardProps {
 const ServiceCard = ({ title, description, icon, features, href, color }: ServiceCardProps) => {
   const colorClasses = {
     blue: {
-      bg: 'bg-blue-50',
+      bg: 'bg-gray-50',
       iconBg: 'bg-blue-100',
       iconText: 'text-blue-600',
       button: 'bg-blue-600 hover:bg-blue-700',
-      border: 'border-blue-200'
+      border: 'border-gray-200'
     },
     green: {
-      bg: 'bg-green-50',
-      iconBg: 'bg-green-100',
-      iconText: 'text-green-600',
-      button: 'bg-green-600 hover:bg-green-700',
-      border: 'border-green-200'
+      bg: 'bg-gray-50',
+      iconBg: 'bg-blue-100',
+      iconText: 'text-blue-600',
+      button: 'bg-blue-600 hover:bg-blue-700',
+      border: 'border-gray-200'
     },
     purple: {
-      bg: 'bg-purple-50',
-      iconBg: 'bg-purple-100',
-      iconText: 'text-purple-600',
-      button: 'bg-purple-600 hover:bg-purple-700',
-      border: 'border-purple-200'
+      bg: 'bg-gray-50',
+      iconBg: 'bg-blue-100',
+      iconText: 'text-blue-600',
+      button: 'bg-blue-600 hover:bg-blue-700',
+      border: 'border-gray-200'
     }
   };
 

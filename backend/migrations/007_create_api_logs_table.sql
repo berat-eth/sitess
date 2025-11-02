@@ -1,0 +1,20 @@
+CREATE TABLE IF NOT EXISTS `api_logs` (
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `api_key_id` INT UNSIGNED NULL,
+  `user_id` INT UNSIGNED NULL,
+  `endpoint` VARCHAR(500) NOT NULL,
+  `method` VARCHAR(10) NOT NULL,
+  `status_code` INT UNSIGNED NOT NULL,
+  `response_time_ms` INT UNSIGNED NULL,
+  `ip_address` VARCHAR(45) NULL,
+  `user_agent` TEXT NULL,
+  `request_body` JSON NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  INDEX `idx_api_key_id` (`api_key_id`),
+  INDEX `idx_user_id` (`user_id`),
+  INDEX `idx_endpoint` (`endpoint`),
+  INDEX `idx_created_at` (`created_at`),
+  FOREIGN KEY (`api_key_id`) REFERENCES `api_keys`(`id`) ON DELETE SET NULL,
+  FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

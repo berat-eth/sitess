@@ -1,0 +1,21 @@
+CREATE TABLE IF NOT EXISTS `subscriptions` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `user_id` INT UNSIGNED NOT NULL,
+  `plan_id` VARCHAR(50) NOT NULL,
+  `plan_name` VARCHAR(255) NOT NULL,
+  `price` DECIMAL(10, 2) NOT NULL,
+  `currency` VARCHAR(10) DEFAULT 'TRY',
+  `status` ENUM('active', 'inactive', 'cancelled', 'expired') DEFAULT 'inactive',
+  `start_date` TIMESTAMP NULL,
+  `end_date` TIMESTAMP NULL,
+  `payment_id` VARCHAR(255) NULL,
+  `payment_status` VARCHAR(50) NULL,
+  `iyzico_conversation_id` VARCHAR(255) NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  INDEX `idx_user_id` (`user_id`),
+  INDEX `idx_status` (`status`),
+  INDEX `idx_payment_id` (`payment_id`),
+  FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

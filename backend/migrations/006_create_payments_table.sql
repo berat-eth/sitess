@@ -1,0 +1,23 @@
+CREATE TABLE IF NOT EXISTS `payments` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `user_id` INT UNSIGNED NOT NULL,
+  `subscription_id` INT UNSIGNED NULL,
+  `amount` DECIMAL(10, 2) NOT NULL,
+  `currency` VARCHAR(10) DEFAULT 'TRY',
+  `status` ENUM('pending', 'completed', 'failed', 'refunded') DEFAULT 'pending',
+  `payment_method` VARCHAR(50) NULL,
+  `payment_id` VARCHAR(255) NULL,
+  `iyzico_conversation_id` VARCHAR(255) NULL,
+  `iyzico_payment_id` VARCHAR(255) NULL,
+  `transaction_date` TIMESTAMP NULL,
+  `description` TEXT NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  INDEX `idx_user_id` (`user_id`),
+  INDEX `idx_subscription_id` (`subscription_id`),
+  INDEX `idx_status` (`status`),
+  INDEX `idx_payment_id` (`payment_id`),
+  FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE,
+  FOREIGN KEY (`subscription_id`) REFERENCES `subscriptions`(`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

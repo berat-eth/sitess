@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
+import { useAuth } from '@/contexts/AuthContext';
+import { useRouter } from 'next/navigation';
 
 interface DashboardHeaderProps {
   onMenuClick: () => void;
@@ -10,6 +12,21 @@ interface DashboardHeaderProps {
 const DashboardHeader = ({ onMenuClick }: DashboardHeaderProps) => {
   const [showNotifications, setShowNotifications] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const { user, logout } = useAuth();
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    await logout();
+  };
+
+  const getInitials = (name: string) => {
+    return name
+      .split(' ')
+      .map(n => n[0])
+      .join('')
+      .toUpperCase()
+      .substring(0, 2);
+  };
 
   const notifications = [
     {
@@ -152,11 +169,15 @@ const DashboardHeader = ({ onMenuClick }: DashboardHeaderProps) => {
               onClick={() => setShowUserMenu(!showUserMenu)}
             >
               <span className="sr-only">Kullanıcı menüsünü aç</span>
-              <div className="h-8 w-8 rounded-full bg-gradient-primary flex items-center justify-center">
-                <span className="text-sm font-semibold text-white">AK</span>
+              <div className="h-8 w-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                <span className="text-sm font-semibold text-white">
+                  {user ? getInitials(user.name) : 'U'}
+                </span>
               </div>
               <span className="hidden lg:flex lg:items-center">
-                <span className="ml-4 text-sm font-semibold leading-6 text-gray-900">Ahmet Kaya</span>
+                <span className="ml-4 text-sm font-semibold leading-6 text-gray-900">
+                  {user?.name || 'Kullanıcı'}
+                </span>
                 <svg className="ml-2 h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
                   <path
                     fillRule="evenodd"
@@ -188,12 +209,12 @@ const DashboardHeader = ({ onMenuClick }: DashboardHeaderProps) => {
                   Ayarlar
                 </a>
                 <div className="my-1 h-px bg-gray-200 mx-2" />
-                <a
-                  href="/logout"
-                  className="block px-3 py-1 text-sm leading-6 text-gray-900 hover:bg-gray-50 rounded-lg mx-2"
+                <button
+                  onClick={handleLogout}
+                  className="block w-full text-left px-3 py-1 text-sm leading-6 text-gray-900 hover:bg-gray-50 rounded-lg mx-2"
                 >
                   Çıkış Yap
-                </a>
+                </button>
               </motion.div>
             )}
           </div>

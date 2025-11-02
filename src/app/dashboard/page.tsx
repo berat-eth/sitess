@@ -1,8 +1,13 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { mockStats, mockProjects, getProjectStatusLabel, getProjectStatusColor } from '@/data/dashboardData';
+import { useAuth } from '@/contexts/AuthContext';
+import apiClient from '@/services/api';
+import Loading from '@/components/Loading';
+import ErrorMessage from '@/components/ErrorMessage';
+import { getProjectStatusLabel, getProjectStatusColor } from '@/data/dashboardData';
 
 const StatsCard = ({ title, value, change, icon, color }: {
   title: string;
@@ -62,7 +67,60 @@ const QuickActionCard = ({ title, description, href, icon, color }: {
 );
 
 export default function DashboardPage() {
-  const recentProjects = mockProjects.slice(0, 3);
+  const { user } = useAuth();
+  const [stats, setStats] = useState({
+    totalProjects: 0,
+    activeProjects: 0,
+    totalRevenue: 0,
+    pendingPayments: 0,
+  });
+  const [projects, setProjects] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  const loadData = async () => {
+    try {
+      setLoading(true);
+      setError('');
+
+      // Load projects
+      const projectsResponse = await apiClient.listProjects(1, 5);
+      if (projectsResponse.success && projectsResponse.data?.projects) {
+        const projectsData = projectsResponse.data.projects;
+        setProjects(projectsData);
+
+        // Calculate stats
+        const active = projectsData.filter((p: any) => p.status === 'in_progress' || p.status === 'active').length;
+        const total = projectsResponse.pagination?.total || projectsData.length;
+        
+        // Calculate revenue from projects
+        const revenue = projectsData.reduce((sum: number, p: any) => sum + (parseFloat(p.budget) || 0), 0);
+
+        setStats({
+          totalProjects: total,
+          activeProjects: active,
+          totalRevenue: revenue,
+          pendingPayments: 0, // This would come from payments API
+        });
+      }
+    } catch (err: any) {
+      setError(err.message || 'Veriler yüklenemedi');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return <Loading message="Yükleniyor..." />;
+  }
+
+  if (error) {
+    return <ErrorMessage message={error} onRetry={loadData} />;
+  }
 
   return (
     <div className="space-y-8">
@@ -72,7 +130,7 @@ export default function DashboardPage() {
         animate={{ opacity: 1, y: 0 }}
         className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 rounded-2xl p-8 text-white"
       >
-        <h1 className="text-3xl font-bold mb-2">Hoş Geldiniz, Ahmet Kaya!</h1>
+        <h1 className="text-3xl font-bold mb-2">Hoş Geldiniz, {user?.name || 'Kullanıcı'}!</h1>
         <p className="text-blue-100 text-lg">
           Araştırma projelerinizi yönetin ve raporlarınıza erişin.
         </p>
@@ -82,7 +140,7 @@ export default function DashboardPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <StatsCard
           title="Toplam Proje"
-          value={mockStats.totalProjects}
+          value={stats.totalProjects}
           icon={
             <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14-4H3m16 8H1m18 4H7" />
@@ -92,7 +150,7 @@ export default function DashboardPage() {
         />
         <StatsCard
           title="Aktif Projeler"
-          value={mockStats.activeProjects}
+          value={stats.activeProjects}
           change="2"
           icon={
             <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -103,8 +161,7 @@ export default function DashboardPage() {
         />
         <StatsCard
           title="Toplam Gelir"
-          value={`₺${mockStats.totalRevenue.toLocaleString()}`}
-          change={`${mockStats.monthlyGrowth}%`}
+          value={`₺${stats.totalRevenue.toLocaleString()}`}
           icon={
             <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
@@ -114,7 +171,7 @@ export default function DashboardPage() {
         />
         <StatsCard
           title="Bekleyen Ödemeler"
-          value={mockStats.pendingPayments}
+          value={stats.pendingPayments}
           icon={
             <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -180,7 +237,12 @@ export default function DashboardPage() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-          {recentProjects.map((project, index) => (
+          {projects.length === 0 ? (
+            <div className="col-span-full text-center py-12 text-gray-500">
+              Henüz proje bulunmuyor
+            </div>
+          ) : (
+            projects.map((project, index) => (
             <motion.div
               key={project.id}
               initial={{ opacity: 0, y: 20 }}
@@ -225,7 +287,8 @@ export default function DashboardPage() {
                 </div>
               </div>
             </motion.div>
-          ))}
+            ))
+          )}
         </div>
       </div>
     </div>

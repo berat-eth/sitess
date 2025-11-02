@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function EkipPage() {
   const teamMembers = [
@@ -11,7 +12,7 @@ export default function EkipPage() {
       specialties: ['Pazar Araştırması', 'İstatistiksel Analiz', 'Proje Yönetimi'],
       image: '/team/mehmet-yilmaz.jpg',
       linkedin: '#',
-      email: 'mehmet.yilmaz@arastirmasirketi.com'
+      email: 'mehmet.yilmaz@mikarastirma.com'
     },
     {
       name: 'Dr. Ayşe Kaya',
@@ -22,7 +23,7 @@ export default function EkipPage() {
       specialties: ['Nitel Araştırma', 'Sosyal Medya Analizi', 'Tüketici Davranışı'],
       image: '/team/ayse-kaya.jpg',
       linkedin: '#',
-      email: 'ayse.kaya@arastirmasirketi.com'
+      email: 'ayse.kaya@mikarastirma.com'
     },
     {
       name: 'Dr. Emre Demir',
@@ -33,7 +34,7 @@ export default function EkipPage() {
       specialties: ['Klinik Araştırmalar', 'Epidemiyoloji', 'Sağlık Teknolojileri'],
       image: '/team/emre-demir.jpg',
       linkedin: '#',
-      email: 'emre.demir@arastirmasirketi.com'
+      email: 'emre.demir@mikarastirma.com'
     },
     {
       name: 'Zeynep Özkan',
@@ -44,7 +45,7 @@ export default function EkipPage() {
       specialties: ['Büyük Veri', 'Machine Learning', 'Veri Görselleştirme'],
       image: '/team/zeynep-ozkan.jpg',
       linkedin: '#',
-      email: 'zeynep.ozkan@arastirmasirketi.com'
+      email: 'zeynep.ozkan@mikarastirma.com'
     },
     {
       name: 'Can Arslan',
@@ -55,7 +56,7 @@ export default function EkipPage() {
       specialties: ['Sosyal Medya', 'SEO Analizi', 'Dijital Pazarlama'],
       image: '/team/can-arslan.jpg',
       linkedin: '#',
-      email: 'can.arslan@arastirmasirketi.com'
+      email: 'can.arslan@mikarastirma.com'
     },
     {
       name: 'Elif Şahin',
@@ -66,7 +67,7 @@ export default function EkipPage() {
       specialties: ['Proje Yönetimi', 'Müşteri İlişkileri', 'Kalite Kontrol'],
       image: '/team/elif-sahin.jpg',
       linkedin: '#',
-      email: 'elif.sahin@arastirmasirketi.com'
+      email: 'elif.sahin@mikarastirma.com'
     }
   ];
 
@@ -115,12 +116,23 @@ export default function EkipPage() {
   return (
     <div className="py-16">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-slate-50 to-blue-50 py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-5xl font-bold text-slate-800 mb-6">
+      <section className="relative py-32 overflow-hidden">
+        <div className="absolute inset-0">
+          <Image
+            src="/images/team-hero.jpg"
+            alt="Professional team meeting"
+            fill
+            className="object-cover"
+            priority
+            unoptimized={true}
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-blue-900/85 via-blue-800/75 to-slate-900/85" />
+        </div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">
             Uzman Ekibimiz
           </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+          <p className="text-xl text-gray-100 max-w-3xl mx-auto mb-8">
             Farklı disiplinlerden gelen deneyimli araştırmacılarımız, 
             her projede en yüksek kalitede sonuçlar elde etmek için çalışıyor.
           </p>
@@ -130,7 +142,7 @@ export default function EkipPage() {
             {departments.map((dept) => (
               <div 
                 key={dept.name} 
-                className={`px-4 py-2 rounded-full border ${colorClasses[dept.color as keyof typeof colorClasses]} font-medium`}
+                className="px-4 py-2 rounded-full border border-white/30 bg-white/10 backdrop-blur-md text-white font-medium"
               >
                 {dept.name} ({dept.count})
               </div>
@@ -140,8 +152,17 @@ export default function EkipPage() {
       </section>
 
       {/* Team Members */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-20 bg-white relative">
+        <div className="absolute left-0 top-0 bottom-0 w-1/3 hidden lg:block opacity-5">
+          <Image
+            src="/images/team-office.jpg"
+            alt="Modern office workspace"
+            fill
+            className="object-cover"
+            unoptimized={true}
+          />
+        </div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {teamMembers.map((member, index) => (
               <div key={index} className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden hover:shadow-xl transition-shadow duration-300">

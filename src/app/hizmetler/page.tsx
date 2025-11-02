@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { FadeInUp, FadeInLeft, FadeInRight, ScaleIn, FloatingElement, StaggerContainer, StaggerItem, GradientText, GlowCard } from '@/components/AnimatedElements';
 
 export default function HizmetlerPage() {
@@ -110,15 +111,24 @@ export default function HizmetlerPage() {
   return (
     <div className="py-16">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-slate-50 to-blue-50 py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-5xl font-bold mb-6">
-            <GradientText gradient="from-blue-600 via-purple-600 to-pink-600">
-              AI Destekli
-            </GradientText>
-            <span className="text-slate-800"> Araştırma Hizmetlerimiz</span>
+      <section className="relative py-32 border-b border-gray-100 overflow-hidden">
+        <div className="absolute inset-0">
+          <Image
+            src="/images/services-hero.jpg"
+            alt="Market research and data analysis"
+            fill
+            className="object-cover"
+            priority
+            unoptimized={true}
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-blue-900/80 via-blue-800/70 to-slate-900/80" />
+        </div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h1 className="text-5xl md:text-6xl font-bold mb-6 text-white">
+            <span className="text-blue-200">AI Destekli</span>
+            <span className="text-white"> Araştırma Hizmetlerimiz</span>
           </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+          <p className="text-xl text-gray-100 max-w-3xl mx-auto mb-8">
             Yapay zeka teknolojileri ile güçlendirilmiş araştırma süreçlerimizle 
             işletmenizin ihtiyaç duyduğu güvenilir verileri sağlıyoruz.
           </p>
@@ -127,7 +137,7 @@ export default function HizmetlerPage() {
               <a
                 key={service.id}
                 href={`#${service.id}`}
-                className="bg-white hover:bg-gray-50 text-gray-700 px-6 py-3 rounded-lg font-medium transition-colors duration-200 shadow-sm border border-gray-200"
+                className="bg-white/10 hover:bg-white/20 backdrop-blur-md text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200 border border-white/20"
               >
                 {service.title}
               </a>

@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function HakkimizdaPage() {
   const values = [
@@ -99,15 +100,26 @@ export default function HakkimizdaPage() {
   return (
     <div className="py-16">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-slate-50 to-blue-50 py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="relative py-32 border-b border-gray-100 overflow-hidden">
+        <div className="absolute inset-0">
+          <Image
+            src="/images/about-hero.jpg"
+            alt="Professional business team"
+            fill
+            className="object-cover"
+            priority
+            unoptimized={true}
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-blue-900/85 via-blue-800/75 to-slate-900/85" />
+        </div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
-              <h1 className="text-5xl font-bold text-slate-800 mb-6">
+              <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">
                 Araştırma Dünyasında 
-                <span className="text-blue-600"> 15 Yıllık</span> Deneyim
+                <span className="text-blue-200"> 15 Yıllık</span> Deneyim
               </h1>
-              <p className="text-xl text-gray-600 mb-8 leading-relaxed">
+              <p className="text-xl text-gray-100 mb-8 leading-relaxed">
                 2008 yılından bu yana, bilimsel metodoloji ve teknolojik yenilikleri 
                 harmanlayarak işletmelerin doğru kararlar almasına yardımcı oluyoruz.
               </p>
@@ -120,7 +132,7 @@ export default function HakkimizdaPage() {
                 </Link>
                 <Link
                   href="/referanslar"
-                  className="border-2 border-slate-300 hover:border-blue-600 text-slate-700 hover:text-blue-600 px-8 py-4 rounded-lg font-semibold text-lg transition-colors duration-200 text-center"
+                  className="border-2 border-white hover:bg-white/10 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-colors duration-200 text-center backdrop-blur-sm"
                 >
                   Referanslarımız
                 </Link>
@@ -129,21 +141,21 @@ export default function HakkimizdaPage() {
             
             {/* Stats */}
             <div className="grid grid-cols-2 gap-8">
-              <div className="bg-white rounded-2xl p-8 shadow-lg text-center">
-                <div className="text-4xl font-bold text-blue-600 mb-2">500+</div>
-                <div className="text-gray-600">Tamamlanan Proje</div>
+              <div className="bg-white/10 backdrop-blur-md rounded-2xl p-8 shadow-lg text-center border border-white/20">
+                <div className="text-4xl font-bold text-white mb-2">500+</div>
+                <div className="text-gray-200">Tamamlanan Proje</div>
               </div>
-              <div className="bg-white rounded-2xl p-8 shadow-lg text-center">
-                <div className="text-4xl font-bold text-green-600 mb-2">98%</div>
-                <div className="text-gray-600">Müşteri Memnuniyeti</div>
+              <div className="bg-white/10 backdrop-blur-md rounded-2xl p-8 shadow-lg text-center border border-white/20">
+                <div className="text-4xl font-bold text-white mb-2">98%</div>
+                <div className="text-gray-200">Müşteri Memnuniyeti</div>
               </div>
-              <div className="bg-white rounded-2xl p-8 shadow-lg text-center">
-                <div className="text-4xl font-bold text-purple-600 mb-2">25+</div>
-                <div className="text-gray-600">Uzman Araştırmacı</div>
+              <div className="bg-white/10 backdrop-blur-md rounded-2xl p-8 shadow-lg text-center border border-white/20">
+                <div className="text-4xl font-bold text-white mb-2">25+</div>
+                <div className="text-gray-200">Uzman Araştırmacı</div>
               </div>
-              <div className="bg-white rounded-2xl p-8 shadow-lg text-center">
-                <div className="text-4xl font-bold text-orange-600 mb-2">15</div>
-                <div className="text-gray-600">Yıllık Deneyim</div>
+              <div className="bg-white/10 backdrop-blur-md rounded-2xl p-8 shadow-lg text-center border border-white/20">
+                <div className="text-4xl font-bold text-white mb-2">15</div>
+                <div className="text-gray-200">Yıllık Deneyim</div>
               </div>
             </div>
           </div>
@@ -151,8 +163,17 @@ export default function HakkimizdaPage() {
       </section>
 
       {/* Mission & Vision */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-20 bg-white relative">
+        <div className="absolute right-0 top-0 bottom-0 w-1/2 hidden lg:block">
+          <Image
+            src="/images/about-team.jpg"
+            alt="Team collaboration"
+            fill
+            className="object-cover opacity-10"
+            unoptimized={true}
+          />
+        </div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
             <div>
               <div className="bg-blue-100 text-blue-600 w-16 h-16 rounded-2xl flex items-center justify-center mb-6">

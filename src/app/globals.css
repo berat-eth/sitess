@@ -2,24 +2,29 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #374151;
+  --foreground: #1e293b;
   --primary: #1e293b;
-  --accent: #3b82f6;
+  --accent: #2563eb;
   --muted: #f8fafc;
   
-  /* Yeni Renkli Palet */
-  --green: #10b981;
-  --purple: #8b5cf6;
-  --orange: #f59e0b;
-  --pink: #ec4899;
-  --cyan: #06b6d4;
-  --indigo: #6366f1;
+  /* Kurumsal Renk Paleti */
+  --blue-dark: #1e40af;
+  --blue: #2563eb;
+  --blue-light: #3b82f6;
+  --gray-50: #f8fafc;
+  --gray-100: #f1f5f9;
+  --gray-200: #e2e8f0;
+  --gray-300: #cbd5e1;
+  --gray-400: #94a3b8;
+  --gray-500: #64748b;
+  --gray-600: #475569;
+  --gray-700: #334155;
+  --gray-800: #1e293b;
+  --gray-900: #0f172a;
   
-  /* Gradient Değişkenleri */
-  --gradient-primary: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
-  --gradient-secondary: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
-  --gradient-tertiary: linear-gradient(135deg, #f59e0b 0%, #ec4899 100%);
-  --gradient-rainbow: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 25%, #ec4899 50%, #f59e0b 75%, #10b981 100%);
+  /* Sadeleştirilmiş Gradient */
+  --gradient-primary: linear-gradient(135deg, #1e40af 0%, #2563eb 100%);
+  --gradient-subtle: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
 }
 
 @theme inline {
@@ -28,12 +33,9 @@
   --color-primary: var(--primary);
   --color-accent: var(--accent);
   --color-muted: var(--muted);
-  --color-green: var(--green);
-  --color-purple: var(--purple);
-  --color-orange: var(--orange);
-  --color-pink: var(--pink);
-  --color-cyan: var(--cyan);
-  --color-indigo: var(--indigo);
+  --color-blue-dark: var(--blue-dark);
+  --color-blue: var(--blue);
+  --color-blue-light: var(--blue-light);
   --font-sans: var(--font-inter);
 }
 
@@ -73,8 +75,8 @@ html {
 }
 
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.3); }
-  50% { box-shadow: 0 0 40px rgba(59, 130, 246, 0.6); }
+  0%, 100% { box-shadow: 0 0 10px rgba(37, 99, 235, 0.15); }
+  50% { box-shadow: 0 0 20px rgba(37, 99, 235, 0.25); }
 }
 
 @keyframes gradient-shift {
@@ -162,33 +164,17 @@ html {
   background: var(--gradient-primary);
 }
 
-.bg-gradient-secondary {
-  background: var(--gradient-secondary);
+.bg-gradient-subtle {
+  background: var(--gradient-subtle);
 }
 
-.bg-gradient-tertiary {
-  background: var(--gradient-tertiary);
-}
-
-.bg-gradient-rainbow {
-  background: var(--gradient-rainbow);
-}
-
-/* Glow Effects */
+/* Sadeleştirilmiş Glow Effects */
 .glow-blue {
-  box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+  box-shadow: 0 0 10px rgba(37, 99, 235, 0.15);
 }
 
-.glow-purple {
-  box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
-}
-
-.glow-green {
-  box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
-}
-
-.glow-pink {
-  box-shadow: 0 0 20px rgba(236, 72, 153, 0.3);
+.hover-glow:hover {
+  box-shadow: 0 0 15px rgba(37, 99, 235, 0.2);
 }
 
 /* Hover Effects */
@@ -201,9 +187,6 @@ html {
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
 }
 
-.hover-glow:hover {
-  box-shadow: 0 0 30px rgba(59, 130, 246, 0.4);
-}
 
 /* Glassmorphism */
 .glass {
@@ -212,23 +195,3 @@ html {
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-/* Neon Text */
-.text-neon-blue {
-  color: #3b82f6;
-  text-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
-}
-
-.text-neon-purple {
-  color: #8b5cf6;
-  text-shadow: 0 0 10px rgba(139, 92, 246, 0.5);
-}
-
-.text-neon-green {
-  color: #10b981;
-  text-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
-}
-
-.text-neon-pink {
-  color: #ec4899;
-  text-shadow: 0 0 10px rgba(236, 72, 153, 0.5);
-}

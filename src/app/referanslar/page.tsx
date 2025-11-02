@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function ReferanslarPage() {
   const clients = [
@@ -136,33 +137,44 @@ export default function ReferanslarPage() {
   return (
     <div className="py-16">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-slate-50 to-blue-50 py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-5xl font-bold text-slate-800 mb-6">
+      <section className="relative py-32 overflow-hidden">
+        <div className="absolute inset-0">
+          <Image
+            src="/images/references-hero.jpg"
+            alt="Business handshake and partnership"
+            fill
+            className="object-cover"
+            priority
+            unoptimized={true}
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-blue-900/85 via-blue-800/75 to-slate-900/85" />
+        </div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">
             Referanslarımız
           </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+          <p className="text-xl text-gray-100 max-w-3xl mx-auto mb-8">
             15 yıllık deneyimimiz boyunca farklı sektörlerden 500+ şirketle 
             başarılı projeler gerçekleştirdik.
           </p>
           
           {/* Stats */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-12">
-            <div className="bg-white rounded-2xl p-6 shadow-lg">
-              <div className="text-3xl font-bold text-blue-600 mb-2">500+</div>
-              <div className="text-gray-600">Tamamlanan Proje</div>
+            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 shadow-lg border border-white/20">
+              <div className="text-3xl font-bold text-white mb-2">500+</div>
+              <div className="text-gray-200">Tamamlanan Proje</div>
             </div>
-            <div className="bg-white rounded-2xl p-6 shadow-lg">
-              <div className="text-3xl font-bold text-green-600 mb-2">200+</div>
-              <div className="text-gray-600">Mutlu Müşteri</div>
+            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 shadow-lg border border-white/20">
+              <div className="text-3xl font-bold text-white mb-2">200+</div>
+              <div className="text-gray-200">Mutlu Müşteri</div>
             </div>
-            <div className="bg-white rounded-2xl p-6 shadow-lg">
-              <div className="text-3xl font-bold text-purple-600 mb-2">98%</div>
-              <div className="text-gray-600">Memnuniyet Oranı</div>
+            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 shadow-lg border border-white/20">
+              <div className="text-3xl font-bold text-white mb-2">98%</div>
+              <div className="text-gray-200">Memnuniyet Oranı</div>
             </div>
-            <div className="bg-white rounded-2xl p-6 shadow-lg">
-              <div className="text-3xl font-bold text-orange-600 mb-2">15</div>
-              <div className="text-gray-600">Yıllık Deneyim</div>
+            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 shadow-lg border border-white/20">
+              <div className="text-3xl font-bold text-white mb-2">15</div>
+              <div className="text-gray-200">Yıllık Deneyim</div>
             </div>
           </div>
         </div>

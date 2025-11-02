@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function BlogPage() {
   const blogPosts = [
@@ -92,12 +93,23 @@ export default function BlogPage() {
   return (
     <div className="py-16">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-slate-50 to-blue-50 py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-5xl font-bold text-slate-800 mb-6">
+      <section className="relative py-32 overflow-hidden">
+        <div className="absolute inset-0">
+          <Image
+            src="/images/blog-hero.jpg"
+            alt="Writing and research"
+            fill
+            className="object-cover"
+            priority
+            unoptimized={true}
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-blue-900/85 via-blue-800/75 to-slate-900/85" />
+        </div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">
             Araştırma Blog
           </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+          <p className="text-xl text-gray-100 max-w-3xl mx-auto mb-8">
             Araştırma dünyasından son gelişmeler, metodoloji rehberleri ve 
             sektör analizleri ile bilginizi güncel tutun.
           </p>
@@ -107,7 +119,7 @@ export default function BlogPage() {
             {categories.map((category) => (
               <button
                 key={category.name}
-                className="bg-white hover:bg-blue-50 text-gray-700 hover:text-blue-600 px-6 py-3 rounded-lg font-medium transition-colors duration-200 shadow-sm border border-gray-200"
+                className="bg-white/10 hover:bg-white/20 backdrop-blur-md text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200 border border-white/20"
               >
                 {category.name} ({category.count})
               </button>

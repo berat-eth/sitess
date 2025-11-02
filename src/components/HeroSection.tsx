@@ -1,457 +1,320 @@
 'use client';
 
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+import Image from 'next/image';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect } from 'react';
 
 const HeroSection = () => {
-  const [currentStep, setCurrentStep] = useState(0);
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [imageErrors, setImageErrors] = useState<{ [key: number]: boolean }>({});
   
-  const researchSteps = [
-    { title: 'Veri Toplama', icon: '📊', color: 'bg-blue-500' },
-    { title: 'Analiz', icon: '🔍', color: 'bg-green-500' },
-    { title: 'Raporlama', icon: '📈', color: 'bg-purple-500' },
-    { title: 'Sunum', icon: '🎯', color: 'bg-orange-500' }
+  const slides = [
+    {
+      id: 1,
+      title: 'Güvenilir Araştırma Çözümleri',
+      subtitle: 'AI Destekli Profesyonel Hizmet',
+      description: 'Pazar araştırması, sosyal medya analizi ve sağlık araştırmalarında uzman ekibimizle işletmenizin doğru kararlar almasına yardımcı oluyoruz.',
+      image: '/images/hero-1.jpg',
+      ctaText: 'Hizmetlerimizi Keşfedin',
+      overlay: 'rgba(30, 58, 138, 0.85)',
+      gradient: 'from-blue-900 via-blue-800 to-slate-900',
+      accent: 'blue'
+    },
+    {
+      id: 2,
+      title: '15 Yıllık Deneyim',
+      subtitle: 'Kanıtlanmış Başarı',
+      description: '500+ tamamlanan proje ve %98 müşteri memnuniyeti ile sektörde öncü bir konumdayız.',
+      image: '/images/hero-2.jpg',
+      ctaText: 'Referanslarımız',
+      overlay: 'rgba(37, 99, 235, 0.85)',
+      gradient: 'from-blue-800 via-blue-700 to-slate-800',
+      accent: 'blue'
+    },
+    {
+      id: 3,
+      title: 'Yapay Zeka Teknolojileri',
+      subtitle: 'Modern Analiz Araçları',
+      description: 'En son AI teknolojileri ile araştırma süreçlerinizi hızlandırın ve daha doğru sonuçlar elde edin.',
+      image: '/images/hero-3.jpg',
+      ctaText: 'AI Hizmetlerimiz',
+      overlay: 'rgba(30, 64, 175, 0.85)',
+      gradient: 'from-slate-900 via-blue-900 to-blue-800',
+      accent: 'blue'
+    },
+    {
+      id: 4,
+      title: 'Özel Araştırma Çözümleri',
+      subtitle: 'İhtiyaçlarınıza Özel',
+      description: 'Kurumsal müşterilerimiz için özel tasarlanmış araştırma metodolojileri ile işletmenizin büyümesine katkı sağlıyoruz.',
+      image: '/images/hero-4.jpg',
+      ctaText: 'İletişime Geçin',
+      overlay: 'rgba(37, 99, 235, 0.85)',
+      gradient: 'from-blue-700 via-slate-800 to-blue-900',
+      accent: 'blue'
+    }
   ];
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentStep((prev) => (prev + 1) % researchSteps.length);
-    }, 2000);
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    }, 6000);
     return () => clearInterval(interval);
-  }, []);
+  }, [slides.length]);
+
+  const goToSlide = (index: number) => {
+    setCurrentSlide(index);
+  };
+
+  const goToNext = () => {
+    setCurrentSlide((prev) => (prev + 1) % slides.length);
+  };
+
+  const goToPrev = () => {
+    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+  };
+
   return (
-    <section className="relative bg-gradient-to-br from-slate-50 to-blue-50 py-20 lg:py-32">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* Content */}
-          <motion.div 
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-center lg:text-left"
-          >
-            <motion.h1 
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="text-4xl lg:text-6xl font-bold text-slate-800 leading-tight mb-6"
-            >
-              Güvenilir{' '}
-              <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                Araştırma
-              </span>{' '}
-              Çözümleri
-            </motion.h1>
-            <motion.p 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-              className="text-xl text-gray-600 mb-8 leading-relaxed"
-            >
-              Pazar araştırması, sosyal medya analizi ve sağlık araştırmalarında 
-              uzman ekibimizle işletmenizin doğru kararlar almasına yardımcı oluyoruz.
-            </motion.p>
-            
-            {/* CTA Buttons */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.6 }}
-              className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
-            >
-              <Link
-                href="/hizmetler"
-                className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-colors duration-200 inline-flex items-center justify-center"
-              >
-                Hizmetlerimizi Keşfedin
-                <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </Link>
-              <Link
-                href="/iletisim"
-                className="border-2 border-slate-300 hover:border-blue-600 text-slate-700 hover:text-blue-600 px-8 py-4 rounded-lg font-semibold text-lg transition-colors duration-200 inline-flex items-center justify-center"
-              >
-                Ücretsiz Danışmanlık
-              </Link>
-            </motion.div>
-
-            {/* Stats */}
-            <motion.div 
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.8 }}
-              className="grid grid-cols-3 gap-8 mt-12 pt-8 border-t border-gray-200"
-            >
-              <motion.div 
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, delay: 1 }}
-                className="text-center lg:text-left"
-              >
-                <motion.div 
-                  className="text-3xl font-bold text-blue-600 mb-1"
-                  animate={{ scale: [1, 1.1, 1] }}
-                  transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
+    <section className="relative h-screen w-full overflow-hidden bg-slate-900">
+      {/* Split Screen Design */}
+      <div className="absolute inset-0 flex">
+        {/* Left Side - Image (60%) */}
+        <div className="w-full lg:w-[60%] relative">
+          <AnimatePresence mode="wait">
+            {slides.map((slide, index) => (
+              index === currentSlide && (
+                <motion.div
+                  key={slide.id}
+                  initial={{ opacity: 0, x: -100 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 100 }}
+                  transition={{ duration: 0.8, ease: "easeInOut" }}
+                  className="absolute inset-0"
                 >
-                  500+
-                </motion.div>
-                <div className="text-sm text-gray-600">Tamamlanan Proje</div>
-              </motion.div>
-              <motion.div 
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, delay: 1.2 }}
-                className="text-center lg:text-left"
-              >
-                <motion.div 
-                  className="text-3xl font-bold text-blue-600 mb-1"
-                  animate={{ scale: [1, 1.1, 1] }}
-                  transition={{ duration: 2, repeat: Infinity, repeatDelay: 3, delay: 0.5 }}
-                >
-                  15+
-                </motion.div>
-                <div className="text-sm text-gray-600">Yıllık Deneyim</div>
-              </motion.div>
-              <motion.div 
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, delay: 1.4 }}
-                className="text-center lg:text-left"
-              >
-                <motion.div 
-                  className="text-3xl font-bold text-blue-600 mb-1"
-                  animate={{ scale: [1, 1.1, 1] }}
-                  transition={{ duration: 2, repeat: Infinity, repeatDelay: 3, delay: 1 }}
-                >
-                  98%
-                </motion.div>
-                <div className="text-sm text-gray-600">Müşteri Memnuniyeti</div>
-              </motion.div>
-            </motion.div>
-          </motion.div>
-
-          {/* Visual */}
-          <motion.div 
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="relative"
-          >
-            <div className="relative z-10">
-              {/* Research Process Animation */}
-              <motion.div 
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.8, delay: 0.6 }}
-                className="bg-white rounded-2xl shadow-2xl p-8 mb-6"
-              >
-                <div className="flex items-center justify-between mb-6">
-                  <div className="flex items-center space-x-3">
-                    <motion.div 
-                      className="w-3 h-3 bg-red-400 rounded-full"
-                      animate={{ scale: [1, 1.2, 1] }}
-                      transition={{ duration: 2, repeat: Infinity, delay: 0 }}
+                  {!imageErrors[slide.id] ? (
+                    <Image
+                      src={slide.image}
+                      alt={slide.title}
+                      fill
+                      priority={index === 0}
+                      className="object-cover"
+                      unoptimized={true}
+                      onError={() => setImageErrors((prev) => ({ ...prev, [slide.id]: true }))}
                     />
-                    <motion.div 
-                      className="w-3 h-3 bg-yellow-400 rounded-full"
-                      animate={{ scale: [1, 1.2, 1] }}
-                      transition={{ duration: 2, repeat: Infinity, delay: 0.3 }}
-                    />
-                    <motion.div 
-                      className="w-3 h-3 bg-green-400 rounded-full"
-                      animate={{ scale: [1, 1.2, 1] }}
-                      transition={{ duration: 2, repeat: Infinity, delay: 0.6 }}
-                    />
-                  </div>
-                  <motion.div 
-                    className="text-sm text-gray-400"
-                    animate={{ opacity: [0.5, 1, 0.5] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                  >
-                    Araştırma Dashboard
-                  </motion.div>
-                </div>
-
-                {/* Research Process Steps */}
-                <div className="mb-6">
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="font-semibold text-gray-800">Araştırma Süreci</h3>
-                    <motion.div 
-                      className="text-xs px-2 py-1 rounded-full bg-blue-100 text-blue-600"
-                      animate={{ scale: [1, 1.05, 1] }}
-                      transition={{ duration: 1, repeat: Infinity }}
-                    >
-                      Aktif
-                    </motion.div>
-                  </div>
-                  
-                  <div className="space-y-3">
-                    {researchSteps.map((step, index) => (
-                      <motion.div
-                        key={index}
-                        className={`flex items-center p-3 rounded-lg transition-all duration-500 ${
-                          currentStep === index 
-                            ? 'bg-gradient-to-r from-blue-50 to-purple-50 border-l-4 border-blue-500' 
-                            : 'bg-gray-50'
-                        }`}
-                        animate={{
-                          scale: currentStep === index ? 1.02 : 1,
-                          x: currentStep === index ? 5 : 0
-                        }}
-                        transition={{ duration: 0.3 }}
-                      >
-                        <motion.div 
-                          className={`w-10 h-10 rounded-full flex items-center justify-center text-white text-lg mr-3 ${
-                            currentStep === index ? step.color : 'bg-gray-400'
-                          }`}
-                          animate={{
-                            rotate: currentStep === index ? [0, 360] : 0,
-                            scale: currentStep === index ? [1, 1.1, 1] : 1
-                          }}
-                          transition={{ 
-                            rotate: { duration: 1, ease: "easeInOut" },
-                            scale: { duration: 0.5 }
-                          }}
-                        >
-                          {step.icon}
-                        </motion.div>
-                        <div className="flex-1">
-                          <div className={`font-medium ${currentStep === index ? 'text-blue-700' : 'text-gray-700'}`}>
-                            {step.title}
-                          </div>
-                          <motion.div 
-                            className="w-full bg-gray-200 rounded-full h-1.5 mt-1"
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ delay: 0.5 }}
-                          >
-                            <motion.div
-                              className={`h-1.5 rounded-full ${step.color}`}
-                              initial={{ width: 0 }}
-                              animate={{ 
-                                width: currentStep === index ? '100%' : 
-                                       currentStep > index ? '100%' : '0%'
-                              }}
-                              transition={{ duration: 0.8, ease: "easeInOut" }}
-                            />
-                          </motion.div>
-                        </div>
-                        {currentStep === index && (
-                          <motion.div
-                            initial={{ opacity: 0, scale: 0 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            className="text-green-500"
-                          >
-                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                            </svg>
-                          </motion.div>
-                        )}
-                      </motion.div>
-                    ))}
-                  </div>
-                </div>
-                
-                {/* Animated Chart representation */}
-                <div className="space-y-4">
-                  <motion.div 
-                    className="flex items-center justify-between"
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.6, delay: 1 }}
-                  >
-                    <span className="text-sm text-gray-600">Pazar Analizi</span>
-                    <div className="flex-1 mx-4 bg-gray-200 rounded-full h-2">
-                      <motion.div 
-                        className="bg-blue-600 h-2 rounded-full"
-                        initial={{ width: 0 }}
-                        animate={{ width: '85%' }}
-                        transition={{ duration: 1.5, delay: 1.2, ease: "easeOut" }}
-                      />
-                    </div>
-                    <motion.span 
-                      className="text-sm font-semibold text-gray-800"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: 2.5 }}
-                    >
-                      85%
-                    </motion.span>
-                  </motion.div>
-                  <motion.div 
-                    className="flex items-center justify-between"
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.6, delay: 1.2 }}
-                  >
-                    <span className="text-sm text-gray-600">Sosyal Medya</span>
-                    <div className="flex-1 mx-4 bg-gray-200 rounded-full h-2">
-                      <motion.div 
-                        className="bg-green-500 h-2 rounded-full"
-                        initial={{ width: 0 }}
-                        animate={{ width: '92%' }}
-                        transition={{ duration: 1.5, delay: 1.4, ease: "easeOut" }}
-                      />
-                    </div>
-                    <motion.span 
-                      className="text-sm font-semibold text-gray-800"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: 2.7 }}
-                    >
-                      92%
-                    </motion.span>
-                  </motion.div>
-                  <motion.div 
-                    className="flex items-center justify-between"
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.6, delay: 1.4 }}
-                  >
-                    <span className="text-sm text-gray-600">Sağlık Araştırması</span>
-                    <div className="flex-1 mx-4 bg-gray-200 rounded-full h-2">
-                      <motion.div 
-                        className="bg-purple-500 h-2 rounded-full"
-                        initial={{ width: 0 }}
-                        animate={{ width: '78%' }}
-                        transition={{ duration: 1.5, delay: 1.6, ease: "easeOut" }}
-                      />
-                    </div>
-                    <motion.span 
-                      className="text-sm font-semibold text-gray-800"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: 2.9 }}
-                    >
-                      78%
-                    </motion.span>
-                  </motion.div>
-                </div>
-              </motion.div>
-
-              {/* Animated Floating cards */}
-              <motion.div 
-                className="absolute -top-4 -right-4 bg-blue-600 text-white p-4 rounded-xl shadow-lg"
-                initial={{ opacity: 0, scale: 0, rotate: -10 }}
-                animate={{ opacity: 1, scale: 1, rotate: 0 }}
-                transition={{ duration: 0.6, delay: 2, type: "spring", stiffness: 200 }}
-                whileHover={{ scale: 1.05, rotate: 5 }}
-              >
-                <motion.div 
-                  className="text-2xl font-bold"
-                  animate={{ scale: [1, 1.1, 1] }}
-                  transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
-                >
-                  24/7
+                  ) : (
+                    <div className={`absolute inset-0 bg-gradient-to-br ${slide.gradient}`} />
+                  )}
+                  {/* Subtle overlay on left */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-black/30 to-transparent" />
                 </motion.div>
-                <div className="text-sm opacity-90">Destek</div>
-              </motion.div>
-              
-              <motion.div 
-                className="absolute -bottom-4 -left-4 bg-green-500 text-white p-4 rounded-xl shadow-lg"
-                initial={{ opacity: 0, scale: 0, rotate: 10 }}
-                animate={{ opacity: 1, scale: 1, rotate: 0 }}
-                transition={{ duration: 0.6, delay: 2.2, type: "spring", stiffness: 200 }}
-                whileHover={{ scale: 1.05, rotate: -5 }}
-              >
-                <motion.div 
-                  className="text-2xl font-bold"
-                  animate={{ scale: [1, 1.1, 1] }}
-                  transition={{ duration: 2, repeat: Infinity, repeatDelay: 3, delay: 1 }}
-                >
-                  ISO
-                </motion.div>
-                <div className="text-sm opacity-90">Sertifikalı</div>
-              </motion.div>
-
-              {/* Data Flow Animation */}
-              <motion.div 
-                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 3 }}
-              >
-                {[...Array(3)].map((_, i) => (
-                  <motion.div
-                    key={i}
-                    className="absolute w-2 h-2 bg-blue-400 rounded-full"
-                    animate={{
-                      x: [0, 50, 100, 150],
-                      y: [0, -20, 20, 0],
-                      opacity: [0, 1, 1, 0],
-                      scale: [0.5, 1, 1, 0.5]
-                    }}
-                    transition={{
-                      duration: 2,
-                      repeat: Infinity,
-                      delay: i * 0.5,
-                      ease: "easeInOut"
-                    }}
-                  />
-                ))}
-              </motion.div>
-            </div>
-
-            {/* Animated Background decorations */}
-            <motion.div 
-              className="absolute -top-8 -left-8 w-24 h-24 bg-blue-100 rounded-full opacity-50"
-              animate={{ 
-                scale: [1, 1.2, 1],
-                rotate: [0, 180, 360]
-              }}
-              transition={{ 
-                duration: 8, 
-                repeat: Infinity,
-                ease: "linear"
-              }}
-            />
-            <motion.div 
-              className="absolute -bottom-8 -right-8 w-32 h-32 bg-purple-100 rounded-full opacity-50"
-              animate={{ 
-                scale: [1, 1.1, 1],
-                rotate: [360, 180, 0]
-              }}
-              transition={{ 
-                duration: 10, 
-                repeat: Infinity,
-                ease: "linear"
-              }}
-            />
-
-            {/* Floating Research Icons */}
-            <motion.div 
-              className="absolute top-20 left-10 text-2xl"
-              animate={{ 
-                y: [0, -10, 0],
-                rotate: [0, 5, -5, 0]
-              }}
-              transition={{ 
-                duration: 3, 
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
-            >
-              📊
-            </motion.div>
-            <motion.div 
-              className="absolute bottom-20 right-10 text-2xl"
-              animate={{ 
-                y: [0, 10, 0],
-                rotate: [0, -5, 5, 0]
-              }}
-              transition={{ 
-                duration: 4, 
-                repeat: Infinity,
-                ease: "easeInOut",
-                delay: 1
-              }}
-            >
-              🔍
-            </motion.div>
-          </motion.div>
+              )
+            ))}
+          </AnimatePresence>
         </div>
+
+        {/* Right Side - Content (40%) */}
+        <div className="hidden lg:flex w-[40%] bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 relative">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-blue-900/20 via-transparent to-transparent" />
+          
+          <div className="relative z-10 flex flex-col justify-center px-12 py-20">
+            <AnimatePresence mode="wait">
+              {slides.map((slide, index) => (
+                index === currentSlide && (
+                  <motion.div
+                    key={slide.id}
+                    initial={{ opacity: 0, y: 50 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -50 }}
+                    transition={{ duration: 0.6, ease: "easeOut" }}
+                    className="space-y-6"
+                  >
+                    {/* Badge */}
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: 0.1 }}
+                      className="inline-block"
+                    >
+                      <span className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-semibold">
+                        {slide.subtitle}
+                      </span>
+                    </motion.div>
+
+                    {/* Title */}
+                    <motion.h1
+                      initial={{ opacity: 0, x: -30 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.2 }}
+                      className="text-5xl lg:text-6xl font-bold text-white leading-tight"
+                    >
+                      {slide.title}
+                    </motion.h1>
+
+                    {/* Description */}
+                    <motion.p
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.4 }}
+                      className="text-lg text-gray-300 leading-relaxed pr-8"
+                    >
+                      {slide.description}
+                    </motion.p>
+
+                    {/* CTA Buttons */}
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.6 }}
+                      className="flex flex-col sm:flex-row gap-4 pt-4"
+                    >
+                      <Link
+                        href="/hizmetler"
+                        className="group bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-xl font-semibold transition-all duration-300 inline-flex items-center justify-center shadow-lg hover:shadow-xl hover:scale-105"
+                      >
+                        {slide.ctaText}
+                        <svg className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
+                      </Link>
+                      <Link
+                        href="/iletisim"
+                        className="border-2 border-gray-600 hover:border-blue-600 text-gray-300 hover:text-white px-8 py-4 rounded-xl font-semibold transition-all duration-300 inline-flex items-center justify-center"
+                      >
+                        Ücretsiz Danışmanlık
+                      </Link>
+                    </motion.div>
+
+                    {/* Stats */}
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.8 }}
+                      className="grid grid-cols-3 gap-6 pt-8 border-t border-gray-700"
+                    >
+                      <div>
+                        <div className="text-3xl font-bold text-blue-400 mb-1">500+</div>
+                        <div className="text-xs text-gray-400">Proje</div>
+                      </div>
+                      <div>
+                        <div className="text-3xl font-bold text-blue-400 mb-1">15+</div>
+                        <div className="text-xs text-gray-400">Yıl</div>
+                      </div>
+                      <div>
+                        <div className="text-3xl font-bold text-blue-400 mb-1">98%</div>
+                        <div className="text-xs text-gray-400">Memnuniyet</div>
+                      </div>
+                    </motion.div>
+                  </motion.div>
+                )
+              ))}
+            </AnimatePresence>
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile/Full Screen Content (for mobile and when right side hidden) */}
+      <div className="lg:hidden absolute inset-0 flex items-center justify-center z-10">
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/60 to-black/40" />
+        <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
+          <AnimatePresence mode="wait">
+            {slides.map((slide, index) => (
+              index === currentSlide && (
+                <motion.div
+                  key={slide.id}
+                  initial={{ opacity: 0, y: 50 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -50 }}
+                  transition={{ duration: 0.6 }}
+                  className="space-y-6"
+                >
+                  <motion.span
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="inline-block bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-semibold mb-4"
+                  >
+                    {slide.subtitle}
+                  </motion.span>
+                  <h1 className="text-4xl md:text-5xl font-bold text-white leading-tight mb-6">
+                    {slide.title}
+                  </h1>
+                  <p className="text-lg text-gray-200 leading-relaxed mb-8">
+                    {slide.description}
+                  </p>
+                  <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                    <Link
+                      href="/hizmetler"
+                      className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-xl font-semibold transition-colors inline-flex items-center justify-center"
+                    >
+                      {slide.ctaText}
+                      <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </Link>
+                    <Link
+                      href="/iletisim"
+                      className="border-2 border-white text-white hover:bg-white hover:text-blue-600 px-8 py-4 rounded-xl font-semibold transition-colors inline-flex items-center justify-center"
+                    >
+                      Ücretsiz Danışmanlık
+                    </Link>
+                  </div>
+                </motion.div>
+              )
+            ))}
+          </AnimatePresence>
+        </div>
+      </div>
+
+      {/* Slide Navigation - Vertical on Right Side (Desktop) */}
+      <div className="hidden lg:block absolute right-8 top-1/2 transform -translate-y-1/2 z-30">
+        <div className="flex flex-col gap-3">
+          {slides.map((_, index) => (
+            <motion.button
+              key={index}
+              onClick={() => goToSlide(index)}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.5 + index * 0.1 }}
+              className={`relative group transition-all duration-300 ${
+                index === currentSlide ? 'opacity-100' : 'opacity-50 hover:opacity-75'
+              }`}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+            >
+              <div className={`h-12 w-1 rounded-full transition-all duration-300 ${
+                index === currentSlide 
+                  ? 'bg-blue-500 w-2' 
+                  : 'bg-white/30 group-hover:bg-white/50'
+              }`} />
+              {index === currentSlide && (
+                <motion.div
+                  className="absolute -right-8 top-1/2 transform -translate-y-1/2 whitespace-nowrap"
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                >
+                  <span className="text-white text-sm font-medium bg-slate-800/90 px-3 py-1 rounded-lg backdrop-blur-sm">
+                    {slides[index].title.split(' ')[0]}
+                  </span>
+                </motion.div>
+              )}
+            </motion.button>
+          ))}
+        </div>
+      </div>
+
+
+      {/* Progress Bar - Top */}
+      <div className="absolute top-0 left-0 right-0 h-1 bg-black/20 z-30">
+        <AnimatePresence>
+          <motion.div
+            key={currentSlide}
+            className="h-full bg-blue-500"
+            initial={{ width: 0 }}
+            animate={{ width: '100%' }}
+            exit={{ width: '100%' }}
+            transition={{ duration: 6, ease: "linear" }}
+          />
+        </AnimatePresence>
       </div>
     </section>
   );

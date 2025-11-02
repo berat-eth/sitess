@@ -1,0 +1,22 @@
+CREATE TABLE IF NOT EXISTS `api_keys` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `user_id` INT UNSIGNED NOT NULL,
+  `name` VARCHAR(255) NOT NULL,
+  `description` TEXT NULL,
+  `key_hash` VARCHAR(255) NOT NULL,
+  `key_prefix` VARCHAR(20) NOT NULL,
+  `permissions` JSON NULL,
+  `rate_limit` INT UNSIGNED DEFAULT 100,
+  `rate_limit_window_ms` INT UNSIGNED DEFAULT 900000,
+  `is_active` BOOLEAN DEFAULT TRUE,
+  `last_used_at` TIMESTAMP NULL,
+  `expires_at` TIMESTAMP NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  INDEX `idx_user_id` (`user_id`),
+  INDEX `idx_key_hash` (`key_hash`),
+  INDEX `idx_key_prefix` (`key_prefix`),
+  INDEX `idx_is_active` (`is_active`),
+  FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

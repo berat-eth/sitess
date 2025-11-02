@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -19,8 +20,8 @@ const Footer = () => {
 
   const contact = [
     { name: 'İletişim', href: '/iletisim' },
-    { name: 'info@arastirmasirketi.com', href: 'mailto:info@arastirmasirketi.com' },
-    { name: '+90 212 XXX XX XX', href: 'tel:+902121234567' },
+    { name: 'info@mikarastirma.com', href: 'mailto:info@mikarastirma.com' },
+    { name: '0538 798 99 10', href: 'tel:+905387989910' },
   ];
 
   return (
@@ -30,12 +31,15 @@ const Footer = () => {
           {/* Company Info */}
           <div className="lg:col-span-1">
             <div className="flex items-center mb-4">
-              <div className="w-10 h-10 bg-gradient-primary rounded-xl flex items-center justify-center mr-3 animate-pulse-glow">
-                <span className="text-white font-bold text-lg">M</span>
+              <div className="relative w-32 h-32">
+                <Image
+                  src="/logo.png"
+                  alt="Mik Araştırma Logo"
+                  fill
+                  className="object-contain"
+                  unoptimized={true}
+                />
               </div>
-              <span className="text-2xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-                Mik Araştırma
-              </span>
             </div>
             <p className="text-gray-300 mb-4">
               Profesyonel araştırma hizmetleri ile işletmenizin büyümesine katkı sağlıyoruz. 
@@ -114,7 +118,7 @@ const Footer = () => {
             </ul>
             <div className="mt-4">
               <p className="text-gray-300 text-sm">
-                İstanbul, Türkiye
+                Ayvalık, Balıkesir
               </p>
             </div>
           </div>

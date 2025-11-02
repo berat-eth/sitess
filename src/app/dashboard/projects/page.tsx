@@ -1,10 +1,26 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { mockProjects, getProjectTypeLabel, getProjectStatusLabel, getProjectStatusColor, Project } from '@/data/dashboardData';
+import apiClient from '@/services/api';
+import Loading from '@/components/Loading';
+import ErrorMessage from '@/components/ErrorMessage';
+import EmptyState from '@/components/EmptyState';
+import { getProjectStatusLabel, getProjectStatusColor } from '@/data/dashboardData';
 
-const ProjectCard = ({ project, index }: { project: Project; index: number }) => (
+const ProjectCard = ({ project, index }: { project: any; index: number }) => {
+  const getStatusColor = (status: string) => {
+    const colors: Record<string, string> = {
+      'active': 'bg-blue-100 text-blue-800',
+      'in_progress': 'bg-blue-100 text-blue-800',
+      'completed': 'bg-green-100 text-green-800',
+      'pending': 'bg-yellow-100 text-yellow-800',
+      'cancelled': 'bg-red-100 text-red-800',
+    };
+    return colors[status] || 'bg-gray-100 text-gray-800';
+  };
+
+  return (
   <motion.div
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
@@ -14,11 +30,8 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
     <div className="flex items-start justify-between mb-3">
       <div className="flex-1">
         <div className="flex items-center gap-2 mb-2">
-          <span className={`px-2 py-1 rounded text-xs font-medium ${getProjectStatusColor(project.status)}`}>
-            {getProjectStatusLabel(project.status)}
-          </span>
-          <span className="px-2 py-1 rounded text-xs font-medium bg-gray-100 text-gray-700">
-            {getProjectTypeLabel(project.type)}
+          <span className={`px-2 py-1 rounded text-xs font-medium ${getStatusColor(project.status)}`}>
+            {project.status === 'in_progress' ? 'Aktif' : getProjectStatusLabel(project.status as any) || project.status}
           </span>
         </div>
         <h3 className="font-semibold text-gray-900 mb-1 line-clamp-2">
@@ -29,7 +42,7 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
         </p>
       </div>
       <div className="text-right ml-4">
-        <p className="text-lg font-bold text-gray-900">₺{project.budget.toLocaleString()}</p>
+        <p className="text-lg font-bold text-gray-900">₺{project.budget ? parseFloat(project.budget).toLocaleString() : '0'}</p>
       </div>
     </div>
 
@@ -60,7 +73,7 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
       <div>
         <p className="text-gray-500">Başlangıç</p>
         <p className="font-medium text-gray-900">
-          {new Date(project.startDate).toLocaleDateString('tr-TR')}
+          {project.start_date ? new Date(project.start_date).toLocaleDateString('tr-TR') : '-'}
         </p>
       </div>
     </div>
@@ -69,32 +82,60 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
       <button className="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded text-sm font-medium transition-colors duration-200">
         Detaylar
       </button>
-      {project.status === 'active' && (
+      {(project.status === 'active' || project.status === 'in_progress') && (
         <button className="px-3 py-2 border border-gray-300 hover:bg-gray-50 text-gray-700 rounded text-sm font-medium transition-colors duration-200">
           Rapor
         </button>
       )}
     </div>
   </motion.div>
-);
+  );
+};
 
 export default function ProjectsPage() {
-  const [filter, setFilter] = useState<'all' | Project['status']>('all');
-  const [typeFilter, setTypeFilter] = useState<'all' | Project['type']>('all');
+  const [projects, setProjects] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const [filter, setFilter] = useState<string>('all');
 
-  const filteredProjects = mockProjects.filter(project => {
-    const statusMatch = filter === 'all' || project.status === filter;
-    const typeMatch = typeFilter === 'all' || project.type === typeFilter;
-    return statusMatch && typeMatch;
-  });
+  useEffect(() => {
+    loadProjects();
+  }, []);
+
+  const loadProjects = async () => {
+    try {
+      setLoading(true);
+      setError('');
+      const response = await apiClient.listProjects(1, 50);
+      if (response.success && response.data?.projects) {
+        setProjects(response.data.projects);
+      }
+    } catch (err: any) {
+      setError(err.message || 'Projeler yüklenemedi');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const filteredProjects = filter === 'all' 
+    ? projects 
+    : projects.filter(p => p.status === filter);
 
   const statusCounts = {
-    all: mockProjects.length,
-    active: mockProjects.filter(p => p.status === 'active').length,
-    completed: mockProjects.filter(p => p.status === 'completed').length,
-    pending: mockProjects.filter(p => p.status === 'pending').length,
-    cancelled: mockProjects.filter(p => p.status === 'cancelled').length,
+    all: projects.length,
+    in_progress: projects.filter(p => p.status === 'in_progress').length,
+    completed: projects.filter(p => p.status === 'completed').length,
+    pending: projects.filter(p => p.status === 'pending').length,
+    cancelled: projects.filter(p => p.status === 'cancelled').length,
   };
+
+  if (loading) {
+    return <Loading message="Projeler yükleniyor..." />;
+  }
+
+  if (error) {
+    return <ErrorMessage message={error} onRetry={loadProjects} />;
+  }
 
   return (
     <div className="space-y-8">
@@ -124,7 +165,7 @@ export default function ProjectsPage() {
           <p className="text-sm text-gray-600">Toplam</p>
         </div>
         <div className="bg-white rounded-lg p-4 text-center border border-gray-200">
-          <p className="text-2xl font-bold text-blue-600">{statusCounts.active}</p>
+          <p className="text-2xl font-bold text-blue-600">{statusCounts.in_progress}</p>
           <p className="text-sm text-gray-600">Aktif</p>
         </div>
         <div className="bg-white rounded-lg p-4 text-center border border-gray-200">
@@ -155,48 +196,27 @@ export default function ProjectsPage() {
               className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             >
               <option value="all">Tüm Durumlar</option>
-              <option value="active">Aktif</option>
+              <option value="in_progress">Aktif</option>
               <option value="completed">Tamamlandı</option>
               <option value="pending">Beklemede</option>
               <option value="cancelled">İptal Edildi</option>
-            </select>
-          </div>
-          <div className="flex-1">
-            <select
-              value={typeFilter}
-              onChange={(e) => setTypeFilter(e.target.value as any)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            >
-              <option value="all">Tüm Türler</option>
-              <option value="market">Pazar Araştırması</option>
-              <option value="social">Sosyal Medya</option>
-              <option value="health">Sağlık Araştırması</option>
             </select>
           </div>
         </div>
       </motion.div>
 
       {/* Projects Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
-        {filteredProjects.map((project, index) => (
-          <ProjectCard key={project.id} project={project} index={index} />
-        ))}
-      </div>
-
-      {filteredProjects.length === 0 && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="text-center py-12"
-        >
-          <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <svg className="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14-4H3m16 8H1m18 4H7" />
-            </svg>
-          </div>
-          <h3 className="text-lg font-medium text-gray-900 mb-2">Proje Bulunamadı</h3>
-          <p className="text-gray-600">Seçilen filtrelere uygun proje bulunmuyor.</p>
-        </motion.div>
+      {filteredProjects.length === 0 ? (
+        <EmptyState
+          title="Proje Bulunamadı"
+          message="Seçilen filtrelere uygun proje bulunmuyor veya henüz proje oluşturmadınız."
+        />
+      ) : (
+        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
+          {filteredProjects.map((project, index) => (
+            <ProjectCard key={project.id} project={project} index={index} />
+          ))}
+        </div>
       )}
     </div>
   );
